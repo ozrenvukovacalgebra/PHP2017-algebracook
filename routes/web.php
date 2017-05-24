@@ -17,3 +17,6 @@ Route::get('/', function () {
 
 Route::get('createuser', 'UserController@createUser');
 Route::post('insertuser', 'UserController@insertUser');
+Route::get('loginuser', 'UserController@loginUser');
+Route::post('checkuser', 'UserController@checkUser');
+Route::get('recipes', 'RecipeController@recipeList')->middleware('auth');
