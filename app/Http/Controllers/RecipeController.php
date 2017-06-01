@@ -7,12 +7,11 @@ use Auth;
 use \App\Recipe;
 
 class RecipeController extends Controller
-{
+{	
     public function recipeList()
 	{
 		$user = Auth::user();
 		$recipes = Recipe::with('user')->get();
-		//dd($recipes);
 		return view('recepti', ['recipes' => $recipes]);
 	}
 	
@@ -22,9 +21,16 @@ class RecipeController extends Controller
 		return view('receptiedit', ['recipe' => $recipe]);
 	}
 	
+	public function recipeInsert()
+	{
+		return view('receptiinsert');
+	}
+	
 	public function recipeDelete($id)
 	{
-		dd($id);
+		$recipe = Recipe::where('id', $id)->first();		
+		$recipe->delete();
+		return redirect()->action('RecipeController@recipeList');
 	}
 	
 	public function recipeSave(Request $request)
@@ -38,11 +44,20 @@ class RecipeController extends Controller
 		else
 		{
 			$recipe = new Recipe();
+			$user = Auth::user();
+			$recipe->id_user = $user->id;
+			
+			if ($request->file('image')->isValid()) 
+			{
+				$path = $request->file('image')->store('public');
+				$recipe->image = $path;
+			}
 		}
 		
 		$recipe->name = $request->name;
 		$recipe->description = $request->desc;
 		$recipe->ingredients = $request->ingr;
+		
 		
 		$recipe->save();
 		

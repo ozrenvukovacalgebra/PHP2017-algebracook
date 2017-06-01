@@ -23,3 +23,4 @@ Route::get('recipes', 'RecipeController@recipeList')->middleware('auth');
 Route::get('recipesedit/{id}', 'RecipeController@recipeEdit')->middleware('auth');
 Route::get('recipesdelete/{id}', 'RecipeController@recipeDelete')->middleware('auth');
 Route::post('recipesave', 'RecipeController@recipeSave')->middleware('auth');
+Route::get('recipeinsert', 'RecipeController@recipeInsert')->middleware('auth');
